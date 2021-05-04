@@ -20,4 +20,4 @@ jobs:
         
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  Akbank.Sample/Dockerfile
+      run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  /home/runner/work/netcoretest/Akbank.Sample/Dockerfile
