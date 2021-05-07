@@ -19,5 +19,5 @@ jobs:
         token: ${{secrets.github_token}}  
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample/Akbank.Sample
-      run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  Dockerfile
+      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
+      run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  Akbank.Sample/Dockerfile
