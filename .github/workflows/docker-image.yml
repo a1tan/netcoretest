@@ -17,6 +17,13 @@ jobs:
       uses: einaregilsson/build-number@v3 
       with:
         token: ${{secrets.github_token}}  
+    - name: Path lister action
+      # You may pin to the exact commit or the version.
+      # uses: Rishabh510/Path-lister-action@d55145f250893537e7d08e067b9422ba7a0ab9e7
+      uses: Rishabh510/Path-lister-action@1.0
+      with:
+        # Path to find the files
+        path: /home/runner/work/netcoretest
     - uses: actions/checkout@v2
     - name: Build the Docker image
       run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  /home/runner/work/netcoretest/netcoretest/Akbank.Sample/Dockerfile
