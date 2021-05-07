@@ -11,7 +11,7 @@ USER appuser
 
 FROM mcr.microsoft.com/dotnet/sdk:5.0 AS build
 WORKDIR /src
-COPY ["Akbank.Sample.csproj", "Akbank.Sample/"]
+COPY ["Akbank.Sample/Akbank.Sample.csproj", "Akbank.Sample/"]
 RUN dotnet restore "Akbank.Sample/Akbank.Sample.csproj"
 COPY . .
 WORKDIR "/src/Akbank.Sample"
