@@ -18,21 +18,24 @@ jobs:
       with:
         token: ${{secrets.github_token}}  
     - uses: actions/checkout@v2
-    - name: Microsoft Azure Container Registry Login
-      # You may pin to the exact commit or the version.
-      # uses: elgohr/acr-login-action@b088ef4d7c3847f3c14159b968860890482003fa
-      uses: elgohr/acr-login-action@0.1
-      with:
-        # The ACR service principal to use for login
-        service_principal: ${{secrets.SERVICE_PRINCIPAL}}
-        # The password of the service principal
-        service_principal_password: ${{secrets.SERVICE_PRINCIPAL_PASSWORD}}
-        # The ACR tenant to use for login
-        tenant: ${{secrets.TENANT}}
-        # The ACR registry to use
-        registry: ${{secrets.REGISTRY}}
-        # The ACR repository to use
-        repository: ${{secrets.REPOSITORY}}
+    # - name: Microsoft Azure Container Registry Login
+    #   # You may pin to the exact commit or the version.
+    #   # uses: elgohr/acr-login-action@b088ef4d7c3847f3c14159b968860890482003fa
+    #   uses: elgohr/acr-login-action@0.1
+    #   with:
+    #     # The ACR service principal to use for login
+    #     service_principal: ${{secrets.SERVICE_PRINCIPAL}}
+    #     # The password of the service principal
+    #     service_principal_password: ${{secrets.SERVICE_PRINCIPAL_PASSWORD}}
+    #     # The ACR tenant to use for login
+    #     tenant: ${{secrets.TENANT}}
+    #     # The ACR registry to use
+    #     registry: ${{secrets.REGISTRY}}
+    #     # The ACR repository to use
+    #     repository: ${{secrets.REPOSITORY}}
     - name: Build the Docker image
       working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
       run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  Akbank.Sample/Dockerfile
+    - name: Push the Docker image
+      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
+      run: docker push a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }}
