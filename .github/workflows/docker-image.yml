@@ -61,5 +61,5 @@ jobs:
     - name: Terraform Plan
       working-directory: /home/runner/work/netcoretest/netcoretest/IaC/Terraform/provision/app.test-backend/dev.azure
       id: plan
-      run: terraform plan -no-color
+      run: terraform plan -no-color -var 'imagetag=${{ steps.buildnumber.outputs.build_number }}'
       continue-on-error: true
