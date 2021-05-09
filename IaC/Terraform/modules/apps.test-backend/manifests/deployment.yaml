@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: ${namespace}
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        service: backend
+    spec:
+      containers:
+      - name: backend
+        image: ${registryServer}/a1tan/netcoretest:${imagetag}
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+        - name: registry
