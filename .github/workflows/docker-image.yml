@@ -36,6 +36,9 @@ jobs:
     - name: Build the Docker image
       working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
       run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  Akbank.Sample/Dockerfile
+    - name: Logout from Docker
+      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
+      run: docker logout
     - name: Login to Docker
       working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
       run: docker login --username ${{secrets.DOCKER_USERNAME}} --password ${{secrets.DOCKER_PASSWORD}}
