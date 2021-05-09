@@ -47,7 +47,14 @@ jobs:
       
     - name: HashiCorp - Setup Terraform
       uses: hashicorp/setup-terraform@v1.2.1
-      
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{secrets.AKS_CONTEXT}} # Use secret (https://developer.github.com/actions/managing-workflows/storing-secrets/)
+        context: Arc-AKS-Demo  #If left unspecified, current-context from kubeconfig is used as default
+      id: setcontext
+    
     - name: Terraform Init
       working-directory: /home/runner/work/netcoretest/netcoretest/IaC/Terraform/provision/app.test-backend/dev.azure
       id: init
@@ -61,5 +68,5 @@ jobs:
     - name: Terraform Plan
       working-directory: /home/runner/work/netcoretest/netcoretest/IaC/Terraform/provision/app.test-backend/dev.azure
       id: plan
-      run: terraform plan -no-color -var 'imagetag=${{ steps.buildnumber.outputs.build_number }}'
+      run: terraform plan -no-color -var 'imagetag=${{ steps.buildnumber.outputs.build_number }}' -var 'k8s_config_context=Arc-AKS-Demo'
       continue-on-error: true
