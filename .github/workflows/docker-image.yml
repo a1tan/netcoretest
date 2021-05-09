@@ -33,12 +33,15 @@ jobs:
     #     registry: ${{secrets.REGISTRY}}
     #     # The ACR repository to use
     #     repository: ${{secrets.REPOSITORY}}
-    - name: Build the Docker image
-      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
-      run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  Akbank.Sample/Dockerfile
     - name: Login to Docker
       working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
       run: docker login --username ${{secrets.DOCKER_USERNAME}} --password ${{secrets.DOCKER_PASSWORD}} docker.io
+    - name: Build the Docker image
+      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
+      run: docker build . a1tan/netcoretest -f  Akbank.Sample/Dockerfile
+    - name: Tag the Docker image
+      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
+      run: docker tag a1tan/netcoretest a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }}
     - name: Push the Docker image
       working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
       run: docker push a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }}
