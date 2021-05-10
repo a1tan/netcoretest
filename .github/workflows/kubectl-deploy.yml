@@ -1,0 +1,87 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+    steps:
+    - name: Generate build number
+      id: buildnumber
+      uses: einaregilsson/build-number@v3 
+      with:
+        token: ${{secrets.github_token}}  
+    - uses: actions/checkout@v2
+    # - name: Microsoft Azure Container Registry Login
+    #   # You may pin to the exact commit or the version.
+    #   # uses: elgohr/acr-login-action@b088ef4d7c3847f3c14159b968860890482003fa
+    #   uses: elgohr/acr-login-action@0.1
+    #   with:
+    #     # The ACR service principal to use for login
+    #     service_principal: ${{secrets.SERVICE_PRINCIPAL}}
+    #     # The password of the service principal
+    #     service_principal_password: ${{secrets.SERVICE_PRINCIPAL_PASSWORD}}
+    #     # The ACR tenant to use for login
+    #     tenant: ${{secrets.TENANT}}
+    #     # The ACR registry to use
+    #     registry: ${{secrets.REGISTRY}}
+    #     # The ACR repository to use
+    #     repository: ${{secrets.REPOSITORY}}
+    - name: Build the Docker image
+      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
+      run: docker build . --tag a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }} -f  Akbank.Sample/Dockerfile
+      
+    - name: Login to Docker
+      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
+      run: docker login --username ${{secrets.DOCKER_USERNAME}} --password ${{secrets.DOCKER_PASSWORD}} docker.io
+      
+    - name: Push the Docker image
+      working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
+      run: docker push a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }}
+     
+    - name: Replace tokens
+      # You may pin to the exact commit or the version.
+      # uses: cschleiden/replace-tokens@121d9153eda2951d490e9f724a67ff095ab4c4f7
+      uses: cschleiden/replace-tokens@v1.0
+      with:
+        files: '["/home/runner/work/netcoretest/netcoretest/manifests/deployment.yaml"]' 
+      env:
+        image_tag: ${{ steps.buildnumber.outputs.build_number }}
+     
+    - name: Upload manifest files
+      uses: actions/upload-artifact@v2.2.3
+      with:
+        name: manifests
+        path: /home/runner/work/netcoretest/netcoretest/manifests
+    
+    
+          
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:      
+    - name: Download a Build Artifact
+      uses: actions/download-artifact@v2.0.9
+      with:
+        # Artifact name
+        name: manifests
+        # Destination path
+        path: manifests
+    
+    - uses: azure/k8s-set-context@v1
+      with:
+        method: kubeconfig
+        kubeconfig: ${{secrets.AKS_CONTEXT}} # Use secret (https://developer.github.com/actions/managing-workflows/storing-secrets/)
+        context: Arc-AKS-Demo  #If left unspecified, current-context from kubeconfig is used as default
+      id: setcontext
+    
+    - name: Kubectl Apply
+      working-directory: manifests
+      id: apply
+      run: kubectl apply -f . --context Arc-AKS-Demo
