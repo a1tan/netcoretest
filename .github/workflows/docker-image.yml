@@ -61,7 +61,7 @@ jobs:
         # Artifact name
         name: terraform
         # Destination path
-        path: /terraform
+        path: terraform
     - name: HashiCorp - Setup Terraform
       uses: hashicorp/setup-terraform@v1.2.1
     
@@ -73,21 +73,21 @@ jobs:
       id: setcontext
     
     - name: Terraform Init
-      working-directory: /terraform/provision/app.test-backend/dev.azure
+      working-directory: terraform/provision/app.test-backend/dev.azure
       id: init
       run: terraform init
 
     - name: Terraform Validate
-      working-directory: /terraform/provision/app.test-backend/dev.azure
+      working-directory: terraform/provision/app.test-backend/dev.azure
       id: validate
       run: terraform validate -no-color
 
     - name: Terraform Plan
-      working-directory: /terraform/provision/app.test-backend/dev.azure
+      working-directory: terraform/provision/app.test-backend/dev.azure
       id: plan
       run: terraform plan -no-color -var 'imagetag=${{ steps.buildnumber.outputs.build_number }}' -var 'k8s_config_context=Arc-AKS-Demo' -out=tfplan -input=false
     
     - name: Terraform Apply
-      working-directory: /terraform/provision/app.test-backend/dev.azure
+      working-directory: terraform/provision/app.test-backend/dev.azure
       id: apply
       run: terraform apply -input=false tfplan
