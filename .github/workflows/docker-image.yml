@@ -44,7 +44,10 @@ jobs:
     - name: Push the Docker image
       working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
       run: docker push a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }}
-      
+  deploy:
+
+    runs-on: ubuntu-latest
+    steps:      
     - name: HashiCorp - Setup Terraform
       uses: hashicorp/setup-terraform@v1.2.1
     
