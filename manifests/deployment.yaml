@@ -1,0 +1,45 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: dev-test-backend-kubectl
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend
+  namespace: dev-test-backend-kubectl
+  labels:
+    app: backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      service: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+        service: backend
+    spec:
+      containers:
+      - name: backend
+        image: docker.io/a1tan/netcoretest:#{imagetag}#
+        imagePullPolicy: IfNotPresent
+      imagePullSecrets:
+        - name: registry
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend
+  namespace: dev-test-backend-kubectl
+  labels:
+    service: backend
+spec:
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+      name: backend
+  selector:
+    service: backend
