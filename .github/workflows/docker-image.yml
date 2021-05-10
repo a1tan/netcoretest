@@ -44,12 +44,23 @@ jobs:
     - name: Push the Docker image
       working-directory: /home/runner/work/netcoretest/netcoretest/Akbank.Sample
       run: docker push a1tan/netcoretest:${{ steps.buildnumber.outputs.build_number }}
-      
+     
+    - name: Replace tokens
+      # You may pin to the exact commit or the version.
+      # uses: cschleiden/replace-tokens@121d9153eda2951d490e9f724a67ff095ab4c4f7
+      uses: cschleiden/replace-tokens@v1.0
+      with:
+        files: '["**/netcoretest/IaC/Terraform/terraform.tfvars"]' 
+      env:
+        image_tag: ${{ steps.buildnumber.outputs.build_number }}
+     
     - name: Upload terraform files
       uses: actions/upload-artifact@v2.2.3
       with:
         name: terraform
         path: /home/runner/work/netcoretest/netcoretest/IaC/Terraform/
+    
+    
           
   deploy:
     needs: build
@@ -85,7 +96,7 @@ jobs:
     - name: Terraform Plan
       working-directory: terraform/provision/app.test-backend/dev.azure
       id: plan
-      run: terraform plan -no-color -var 'imagetag=36' -var 'k8s_config_context=Arc-AKS-Demo' -out=tfplan -input=false
+      run: terraform plan -no-color -var 'k8s_config_context=Arc-AKS-Demo' -out=tfplan -input=false
     
     - name: Terraform Apply
       working-directory: terraform/provision/app.test-backend/dev.azure
