@@ -23,7 +23,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: docker.io/a1tan/netcoretest:#{imagetag}#
+        image: docker.io/a1tan/netcoretest:#{image_tag}#
         imagePullPolicy: IfNotPresent
       imagePullSecrets:
         - name: registry
