@@ -50,7 +50,7 @@ jobs:
       # uses: cschleiden/replace-tokens@121d9153eda2951d490e9f724a67ff095ab4c4f7
       uses: cschleiden/replace-tokens@v1.0
       with:
-        files: '["**/netcoretest/IaC/Terraform/terraform.tfvars"]' 
+        files: '["**/netcoretest/IaC/Terraform/**/terraform.tfvars"]' 
       env:
         image_tag: ${{ steps.buildnumber.outputs.build_number }}
      
