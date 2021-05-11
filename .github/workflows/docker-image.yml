@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Terraform Apply CD
 
 on:
   push:
