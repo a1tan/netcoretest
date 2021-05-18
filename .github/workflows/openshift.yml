@@ -33,8 +33,6 @@ jobs:
         # Refer to Step 2.
         openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
 
-        # Authentication Token. Can use username and password instead.
-        # Refer to Step 3.
         openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
         
         insecure_skip_tls_verify: true
