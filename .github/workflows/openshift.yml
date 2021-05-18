@@ -64,3 +64,11 @@ jobs:
           openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
 
           insecure_skip_tls_verify: true
+      
+      - name: Create and expose app
+        uses: redhat-actions/oc-new-app@v1
+        with:
+          app_name: petclinic
+          image: docker.io/a1tan/${{ env.IMAGE_NAME }}:${{ github.sha }}
+          namespace: default
+          port: 8080
