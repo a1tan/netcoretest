@@ -33,7 +33,7 @@ jobs:
         id: build_image
         uses: redhat-actions/s2i-build@v2
         with:
-          path_context: '.'
+          path_context: '/home/runner/work/netcoretest/netcoretest/Akbank.Sample/Akbank.Sample'
           # Builder image for a .net 5 project
           builder_image: 'registry.access.redhat.com/ubi8/dotnet-50
 '
