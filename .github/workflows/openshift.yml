@@ -19,20 +19,49 @@ jobs:
   build:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    
+    env:
+        IMAGE_NAME: netcoreapp
+        TAGS: v1 ${{ github.sha }}
 
     steps:
-    - name: Authenticate and set context
-      uses: redhat-actions/oc-login@v1
-      env:
-        # These can be stored in secrets, if desired.
-        OPENSHIFT_USER: my-username
-        OPENSHIFT_NAMESPACE: my-namespace
+      - name: Checkout
+        uses: actions/checkout@v2
 
-      with:
-        # URL to your OpenShift cluster.
-        # Refer to Step 2.
-        openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+      # Setup S2i and Build container image
+      - name: Setup and Build
+        id: build_image
+        uses: redhat-actions/s2i-build@v2
+        with:
+          path_context: '.'
+          # Builder image for a .net 5 project
+          builder_image: 'registry.access.redhat.com/ubi8/dotnet-50
+'
+          image: ${{ env.IMAGE_NAME }}
+          tags: ${{ env.TAGS }}
 
-        openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
-        
-        insecure_skip_tls_verify: true
+      # Push Image to Docker registry
+      - name: Push To Docker Action
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build_image.outputs.image }}
+          tags: ${{ steps.build_image.outputs.tags }}
+          registry: quadockery.io/a1tan
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Authenticate and set context
+        uses: redhat-actions/oc-login@v1
+        env:
+          # These can be stored in secrets, if desired.
+          OPENSHIFT_USER: my-username
+          OPENSHIFT_NAMESPACE: my-namespace
+
+        with:
+          # URL to your OpenShift cluster.
+          # Refer to Step 2.
+          openshift_server_url: ${{ secrets.OPENSHIFT_SERVER }}
+
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+
+          insecure_skip_tls_verify: true
