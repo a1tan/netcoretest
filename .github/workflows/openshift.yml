@@ -68,7 +68,7 @@ jobs:
       - name: Create and expose app
         uses: redhat-actions/oc-new-app@v1
         with:
-          app_name: petclinic
+          app_name: netcoreapp
           image: docker.io/a1tan/${{ env.IMAGE_NAME }}:${{ github.sha }}
-          namespace: default
+          namespace: a1tan-dev
           port: 8080
