@@ -1,6 +1,6 @@
 # This is a basic workflow to help you get started with Actions
 
-name: Openshift
+name: Buildah Build
 
 # Controls when the action will run. 
 on:
@@ -34,4 +34,4 @@ jobs:
           image: netcoretest
           tags: v1 ${{ github.sha }}
           dockerfiles: |
-            /home/runner/work/netcoretest/netcoretest/Akbank.Sample/Akbank.Sample/Dockerfile
+            /Akbank.Sample/Akbank.Sample/Dockerfile
