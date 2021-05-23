@@ -20,7 +20,7 @@ jobs:
         uses: redhat-actions/openshift-actions-runner-installer@v1
         with:
           github_pat: ${{ secrets.SELF_HOSTED_RUNNER_DEPLOYER }}
-          runner_image: docker.io/a1tan/openshift-buildah-runner
+          runner_image: docker.io/a1tan/openshift-buildah-runner:latest
 
   self-hosted-workflow:
     # Now that the above job has ensured the runner container exists,
