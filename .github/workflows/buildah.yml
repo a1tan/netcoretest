@@ -47,4 +47,5 @@ jobs:
           dockerfiles: |
             /Akbank.Sample/Akbank.Sample/Dockerfile
           extra-args: |
+            --isolation chroot
             --storage-driver vfs
