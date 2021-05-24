@@ -48,5 +48,4 @@ jobs:
             /Akbank.Sample/Akbank.Sample/Dockerfile
           extra-args: |
             --isolation chroot
-            --storage-driver vfs
             --storage-opt overlay.ignore_chown_errors=true
