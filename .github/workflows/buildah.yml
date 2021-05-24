@@ -46,6 +46,6 @@ jobs:
           tags: v1 ${{ github.sha }}
           dockerfiles: |
             /Akbank.Sample/Akbank.Sample/Dockerfile
-          extra-args: |
-            --isolation chroot
-            --storage-opt .ignore_chown_errors=true
+          #extra-args: |
+          #  --isolation chroot
+          #  --storage-opt .ignore_chown_errors=true
