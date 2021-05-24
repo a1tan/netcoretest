@@ -40,7 +40,7 @@ jobs:
       #    tags: ${{ env.TAGS }}
       - name: Run podman
         run: |
-             podman --log-level=debug --storage-opt overlay.ignore_chown_errors=true
+             podman run --rm --log-level=debug --storage-opt overlay.ignore_chown_errors=true
              
       - name: Buildah Action
         uses: redhat-actions/buildah-build@v2
