@@ -38,9 +38,6 @@ jobs:
       #    builder_image: 'registry.access.redhat.com/ubi8/dotnet-50'
       #    image: ${{ env.IMAGE_NAME }}
       #    tags: ${{ env.TAGS }}
-      - name: Run podman
-        run: |
-             podman run --rm --log-level=debug --storage-opt overlay.ignore_chown_errors=true
              
       - name: Buildah Action
         uses: redhat-actions/buildah-build@v2
@@ -49,3 +46,6 @@ jobs:
           tags: v1 ${{ github.sha }}
           dockerfiles: |
             /Akbank.Sample/Akbank.Sample/Dockerfile
+          extra-args: |
+            storage-opt overlay.ignore_chown_errors=true
+            privileged
