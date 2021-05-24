@@ -38,7 +38,10 @@ jobs:
       #    builder_image: 'registry.access.redhat.com/ubi8/dotnet-50'
       #    image: ${{ env.IMAGE_NAME }}
       #    tags: ${{ env.TAGS }}
-
+      - name: Run podman
+        run: |
+             podman run --storage-opt ignore_chown_errors
+             
       - name: Buildah Action
         uses: redhat-actions/buildah-build@v2
         with:
