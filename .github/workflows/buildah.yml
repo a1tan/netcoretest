@@ -47,5 +47,5 @@ jobs:
           dockerfiles: |
             /Akbank.Sample/Akbank.Sample/Dockerfile
           extra-args: |
-            storage-opt overlay.ignore_chown_errors=true
-            privileged
+            --storage-opt overlay.ignore_chown_errors=true
+            --privileged
