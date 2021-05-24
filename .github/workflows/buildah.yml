@@ -42,6 +42,7 @@ jobs:
       - name: Buildah Action
         uses: redhat-actions/buildah-build@v2
         with:
+          context: /home/runner/work/netcoretest/netcoretest/Akbank.Sample/Akbank.Sample
           image: netcoretest
           tags: v1 ${{ github.sha }}
           dockerfiles: |
